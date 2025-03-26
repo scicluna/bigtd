@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8hade8cqi14i"]
+
+[ext_resource type="Script" path="res://Towers/TestBuilder/ArrowTower/ArrowTower.gd" id="1_egre7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4vqjp"]
+
+[node name="ArrowTower" type="Node2D"]
+script = ExtResource("1_egre7")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+
+[node name="RangeArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RangeArea"]
+shape = SubResource("CircleShape2D_4vqjp")
+
+[node name="AttackTimer" type="Timer" parent="."]
