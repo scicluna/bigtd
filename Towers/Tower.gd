@@ -45,6 +45,11 @@ func select_target() -> Node2D:
 	return null
 
 func attack(target: Node2D):
-	# Example: apply damage directly
-	target.take_damage(damage, damage_type)
-	# Add effect logic or projectile spawning here
+	var projectile = projectile_scene.instantiate()
+	
+	projectile.damage = self.damage
+	projectile.damage_type = self.damage_type
+	projectile.direction = (target.global_position - global_position).normalized()
+	projectile.position = global_position
+	
+	get_parent().add_child(projectile)

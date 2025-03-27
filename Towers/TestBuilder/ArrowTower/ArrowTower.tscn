@@ -1,13 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8hade8cqi14i"]
+[gd_scene load_steps=5 format=3 uid="uid://c8hade8cqi14i"]
 
 [ext_resource type="Script" path="res://Towers/TestBuilder/ArrowTower/ArrowTower.gd" id="1_egre7"]
+[ext_resource type="PackedScene" uid="uid://kdpghkvexkw4" path="res://Towers/TestBuilder/ArrowTower/arrow.tscn" id="2_mrjlq"]
+[ext_resource type="Texture2D" uid="uid://cfmbsg61eqpt5" path="res://Towers/TestBuilder/ArrowTower/arrowtowerbeta.png" id="3_xjaiq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4vqjp"]
+radius = 200.0
 
 [node name="ArrowTower" type="Node2D"]
 script = ExtResource("1_egre7")
+projectile_scene = ExtResource("2_mrjlq")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("3_xjaiq")
 
 [node name="RangeArea" type="Area2D" parent="."]
 
