@@ -1,0 +1,49 @@
+[gd_resource type="TileSet" load_steps=11 format=3 uid="uid://cuhpu83f1obr2"]
+
+[ext_resource type="Texture2D" uid="uid://ixool7us1k3u" path="res://Maps/Basic/basictile.png" id="1_jwinf"]
+[ext_resource type="Texture2D" uid="uid://1w0ysxvwhyc0" path="res://Maps/Basic/spawner.png" id="2_7ycfr"]
+[ext_resource type="Texture2D" uid="uid://cjjwhii15a0yq" path="res://Maps/Basic/waypointtile.png" id="3_3pp6r"]
+[ext_resource type="Texture2D" uid="uid://cud5ufjmjl3ok" path="res://Maps/Basic/endpointtile.png" id="4_7hbo0"]
+[ext_resource type="Texture2D" uid="uid://cgcysui24drbu" path="res://Maps/Basic/walltile.png" id="5_wdkme"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qm8v6"]
+resource_name = "Generic"
+texture = ExtResource("1_jwinf")
+texture_region_size = Vector2i(32, 32)
+0:0/next_alternative_id = 2
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r5jj3"]
+resource_name = "Wall"
+texture = ExtResource("5_wdkme")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nvcgr"]
+resource_name = "WayPoint"
+texture = ExtResource("3_3pp6r")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_11mya"]
+resource_name = "End"
+texture = ExtResource("4_7hbo0")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_woxlx"]
+resource_name = "Spawn"
+texture = ExtResource("2_7ycfr")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+navigation_layer_0/layers = 1
+custom_data_layer_0/name = ""
+custom_data_layer_0/type = 0
+sources/1 = SubResource("TileSetAtlasSource_qm8v6")
+sources/3 = SubResource("TileSetAtlasSource_nvcgr")
+sources/4 = SubResource("TileSetAtlasSource_11mya")
+sources/2 = SubResource("TileSetAtlasSource_r5jj3")
+sources/5 = SubResource("TileSetAtlasSource_woxlx")
