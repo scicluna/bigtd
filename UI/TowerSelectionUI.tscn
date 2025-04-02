@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c328wj4uwjfxm"]
+
+[ext_resource type="Script" path="res://UI/TowerSelectionUI.gd" id="1_u866a"]
+
+[node name="TowerSelectionUi" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_u866a")
+
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 5

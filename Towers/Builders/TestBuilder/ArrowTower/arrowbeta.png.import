@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfmbsg61eqpt5"
-path="res://.godot/imported/arrowtowerbeta.png-f7a83a1c7c16f45bf55d6b855a86329d.ctex"
+uid="uid://cwyypbsssywxg"
+path="res://.godot/imported/arrowbeta.png-bf1def29a69bb83b64fe47fc7ccce376.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Towers/TestBuilder/ArrowTower/arrowtowerbeta.png"
-dest_files=["res://.godot/imported/arrowtowerbeta.png-f7a83a1c7c16f45bf55d6b855a86329d.ctex"]
+source_file="res://Towers/Builders/TestBuilder/ArrowTower/arrowbeta.png"
+dest_files=["res://.godot/imported/arrowbeta.png-bf1def29a69bb83b64fe47fc7ccce376.ctex"]
 
 [params]
 

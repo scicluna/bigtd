@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=4 uid="uid://cewc16paysjlr"]
+[gd_scene load_steps=6 format=4 uid="uid://cewc16paysjlr"]
 
+[ext_resource type="Script" path="res://Main.gd" id="1_2sauf"]
 [ext_resource type="TileSet" uid="uid://cuhpu83f1obr2" path="res://Maps/Basic/BasicTiles.tres" id="1_sl7t0"]
 [ext_resource type="Script" path="res://Maps/Map.gd" id="2_5fx01"]
 [ext_resource type="PackedScene" uid="uid://bfbx2ofm6jaa2" path="res://Mobs/TestMob/Mob1.tscn" id="3_jfuku"]
-[ext_resource type="PackedScene" uid="uid://c8hade8cqi14i" path="res://Towers/TestBuilder/ArrowTower/ArrowTower.tscn" id="4_hmcap"]
+[ext_resource type="PackedScene" uid="uid://c328wj4uwjfxm" path="res://UI/TowerSelectionUI.tscn" id="5_84c1n"]
 
 [node name="BasicMap" type="Node2D"]
+script = ExtResource("1_2sauf")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(145, 100)
@@ -14,8 +16,8 @@ tile_set = ExtResource("1_sl7t0")
 script = ExtResource("2_5fx01")
 
 [node name="Mob1" parent="TileMapLayer" instance=ExtResource("3_jfuku")]
-z_index = 1
-position = Vector2(16, 18)
+position = Vector2(18, 18)
 
-[node name="ArrowTower" parent="." instance=ExtResource("4_hmcap")]
-position = Vector2(160, 309)
+[node name="TowerSelectionUi" parent="." instance=ExtResource("5_84c1n")]
+
+[node name="Towers" type="Node2D" parent="."]
