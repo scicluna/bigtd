@@ -7,6 +7,8 @@ const WAYPOINT = 3
 const END = 4
 const SPAWN = 5
 
+signal path_updated(new_path: Array) # Pass the new path with the signal
+
 # Dictionary to keep track of tiles occupied by towers/obstacles
 var occupied_tiles = {}
 
@@ -156,6 +158,7 @@ func generate_mob_path():
 		mob_path.append_array(path_segment.slice(1)) # Append path, excluding start
 
 	print("Generated mob path (length ", mob_path.size(), "): ", mob_path)
+	path_updated.emit(mob_path) # Emit the signal with the complete path
 
 
 func bfs(start: Vector2i, end: Vector2i) -> Array[Vector2i]:

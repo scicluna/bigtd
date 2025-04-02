@@ -19,3 +19,11 @@ position = Vector2(16, 18)
 
 [node name="ArrowTower" parent="." instance=ExtResource("4_hmcap")]
 position = Vector2(160, 309)
+price = null
+attack_range = null
+attack_speed = null
+damage = null
+damage_type = null
+effects = null
+size = null
+targeting_mode = null

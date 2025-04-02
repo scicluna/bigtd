@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfbx2ofm6jaa2"]
+
+[ext_resource type="Script" path="res://Mobs/TestMob/mob_1.gd" id="1_hek6d"]
+[ext_resource type="Texture2D" uid="uid://u2ljgbkfel6n" path="res://Mobs/TestMob/crystalbeta.png" id="2_a2emo"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_api34"]
+height = 20.0
+
+[node name="Mob1" type="Node2D" groups=["mobs"]]
+script = ExtResource("1_hek6d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_a2emo")
+
+[node name="Area2D" type="Area2D" parent="." groups=["mobs"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_api34")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
