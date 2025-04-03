@@ -1,13 +1,14 @@
 extends Node2D
 
 
-@onready var tower_selection_ui: Control = $TowerSelectionUi
-@onready var tilemap_layer: TileMapLayer = $TileMapLayer
-@onready var towers_container: Node2D = $Towers # Add an empty Node2D called "Towers" to hold placed towers
+@onready var tower_selection_ui: Control = $CanvasLayer/TowerSelectionUi
+@onready var tilemap_layer: TileMapLayer = $BasicMap/TileMapLayer
+@onready var towers_container: Node2D = $BasicMap/Towers
 
 # --- State Variables ---
 var selected_tower_scene: PackedScene = null
 var is_placing_tower: bool = false
+var ghost_tower_instance = null
 # Add player resources later, e.g., var player_gold: int = 100
 
 func _ready():
@@ -22,6 +23,34 @@ func _ready():
 		printerr("MainGame cannot find TileMapLayer node!")
 	#if not towers_container:
 		#printerr("MainGame requires a Node2D named 'Towers' to place towers into.")
+		
+func _process(delta: float) -> void:
+	if is_placing_tower:
+		if ghost_tower_instance == null and selected_tower_scene != null:
+			ghost_tower_instance = selected_tower_scene.instantiate()
+			 # Make it look like a ghost (semi-transparent)
+			ghost_tower_instance.modulate = Color(1, 1, 1, 0.5)
+			 # Add it somewhere temporarily, maybe directly to self
+			add_child(ghost_tower_instance)
+			ghost_tower_instance.targeting_mode = "passive"
+
+		if ghost_tower_instance != null:
+			var mouse_pos = get_global_mouse_position()
+			var tilemap_local_pos = tilemap_layer.to_local(mouse_pos)
+			var cell_coord = tilemap_layer.local_to_map(tilemap_local_pos)
+			var cell_center_local = tilemap_layer.map_to_local(cell_coord) # Adjust for center as needed
+			ghost_tower_instance.global_position = tilemap_layer.to_global(cell_center_local)
+			ghost_tower_instance.visible = true
+
+			 # Optional: Change color based on validity
+			if tilemap_layer.is_valid_tower_spot(cell_coord):
+				ghost_tower_instance.modulate = Color(0,1,0,.5)
+			else:
+				ghost_tower_instance.modulate = Color(1, 0, 0, 0.5) # Red tint
+				
+	elif ghost_tower_instance != null:
+		ghost_tower_instance.queue_free() # Or hide it: ghost_tower_instance.visible = false
+		ghost_tower_instance = null
 
 # Called when the UI emits 'tower_selected'
 func _on_tower_selected_for_placement(tower_scene: PackedScene):

@@ -79,6 +79,8 @@ func select_target() -> Node2D:
 		"first":
 			return targets[0]
 		# Add other modes like "strongest" here
+		"stopped":
+			return null
 	return null
 
 func attack(target: Node2D):
