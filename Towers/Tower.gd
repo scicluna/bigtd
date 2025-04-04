@@ -51,7 +51,6 @@ func _ready():
 	print("Base Tower _ready() finished for: ", name)
 
 func _on_range_area_entered(area: Area2D):
-	print(">>> Signal area_entered received by: ", name, " from ", area) # Check if signal fires
 	if area.is_in_group("mobs"):
 		print("Mob entered range: ", area.name) # Debug print
 		if not targets.has(area): # Avoid adding duplicates
@@ -61,7 +60,6 @@ func _on_range_area_entered(area: Area2D):
 				attack_timer.start()
 
 func _on_range_area_exited(area: Area2D):
-	print("<<< Signal area_exited received by: ", name, " from ", area) # Check if signal fires
 	if area.is_in_group("mobs"):
 		print("Mob exited range: ", area.name) # Debug print
 		targets.erase(area)

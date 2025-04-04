@@ -90,18 +90,45 @@ func remove_tower(tile_pos: Vector2i):
 func is_tile_occupied(tile_pos: Vector2i) -> bool:
 	return occupied_tiles.has(tile_pos)
 
-# Renamed for clarity: Checks if a tile is suitable for placing a tower
+# Checks if a tile is suitable for placing a tower
 func is_valid_tower_spot(tile_pos: Vector2i) -> bool:
 	if not has_tile(tile_pos): # Check if the tile actually exists in the map layer
 		return false
 	var source_id = get_cell_source_id(tile_pos)
 	# Can't place on Walls, Waypoints, Spawn, End, or already occupied tiles
 	# Allow placing on GENERIC tiles (adjust if needed)
-	return source_id != WALL and \
-		   source_id != WAYPOINT and \
-		   source_id != SPAWN and \
-		   source_id != END and \
-		   not is_tile_occupied(tile_pos)
+	if source_id == WALL or \
+	   source_id == WAYPOINT or \
+	   source_id == SPAWN or \
+	   source_id == END:
+		# print("Invalid spot: Tile type restricted at ", tile_pos, " (ID: ", source_id, ")") # Debug
+		return false
+	# Can't place on already occupied tiles (by other towers)
+	if is_tile_occupied(tile_pos):
+		# print("Invalid spot: Tile already occupied at ", tile_pos) # Debug
+		return false
+	
+	# Mob Overlap Check ---
+	# 1. Calculate the world-space rectangle for the tile
+	var tile_world_rect = get_tile_world_rect(tile_pos)
+	if tile_world_rect == Rect2(): # Check if calculation failed
+		printerr("Could not calculate world rect for tile: ", tile_pos)
+		return false # Treat as invalid if we can't check
+
+	# 2. Get all nodes currently in the "mobs" group
+	var mobs_in_group = get_tree().get_nodes_in_group("mobs")
+
+	# 3. Check if any mob's position is inside the tile's rectangle
+	for mob in mobs_in_group:
+		# Ensure the node is valid (might have been freed) and is a Node2D
+		if is_instance_valid(mob) and mob is Node2D:
+			if tile_world_rect.has_point(mob.global_position):
+				# print("Invalid spot: Mob '", mob.name, "' overlaps tile ", tile_pos) # Debug
+				return false # Found a mob overlapping, spot is invalid
+
+	# --- All Checks Passed ---
+	# print("Valid spot at ", tile_pos) # Debug
+	return true
 
 # New function: Checks if a tile is traversable for mob pathfinding (BFS)
 func is_traversable(tile_pos: Vector2i) -> bool:
@@ -203,3 +230,46 @@ func bfs(start: Vector2i, end: Vector2i) -> Array[Vector2i]:
 # Helper to check if a tile exists on the layer
 func has_tile(cell: Vector2i) -> bool:
 	return get_cell_source_id(cell) != -1 # -1 means no tile
+
+# --- Helper function to get tile Rect2 in world coordinates ---
+func get_tile_world_rect(tile_pos: Vector2i) -> Rect2:
+	if not tile_set:
+		printerr("TileSet not available in TileMapLayer!")
+		if self.tile_set:
+			tile_set = self.tile_set
+		else:
+			printerr("Cannot determine TileSet.")
+			return Rect2()
+
+	var tile_size_pixels = tile_set.tile_size
+	if tile_size_pixels == Vector2i.ZERO:
+		printerr("TileSet tile_size is zero!")
+		return Rect2()
+
+	var local_pos_from_map = map_to_local(tile_pos)
+
+	# --- !!! CRUCIAL ANCHOR ADJUSTMENT !!! ---
+	# Set this variable based on your editor setting for
+	# TileMap -> Tile Set -> Tile Layout -> Tile Anchor
+	var TILE_ANCHOR_IS_CENTER = true # <-- SET THIS TO true or false
+
+	var local_top_left: Vector2
+	if TILE_ANCHOR_IS_CENTER:
+		local_top_left = local_pos_from_map - (tile_size_pixels / 2.0)
+	else: # Assumes TopLeft (0,0) if not Center
+		local_top_left = local_pos_from_map
+	# --- End Anchor Adjustment ---
+
+	# Create the rectangle in local space using the calculated TOP-LEFT corner
+	var local_rect = Rect2(local_top_left, tile_size_pixels)
+
+	# --- Convert the local Rect corners to global space using the '*' operator ---
+	var global_top_left     = global_transform * local_rect.position
+	var global_bottom_right = global_transform * local_rect.end # Use get_end() for bottom-right corner
+	# --- End Conversion ---
+
+	# Create the final rectangle in global space from the transformed points
+	# Ensure size is positive
+	var world_rect = Rect2(global_top_left, global_bottom_right - global_top_left).abs()
+
+	return world_rect
